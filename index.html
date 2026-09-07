@@ -626,13 +626,18 @@ document
 .getElementById("clothInput")
 .addEventListener("change", function(){
 
-  const file = this.files[0];
+  const file =
+    this.files && this.files[0];
 
-  if(!file) return;
+  if(!file){
+    return;
+  }
 
   garmentFile = file;
 
-  selectedCloth = "Custom Garment";
+  selectedCloth =
+    "Custom Garment";
+
 
   document
     .querySelectorAll(".clothes")
@@ -642,10 +647,98 @@ document
 
     });
 
+
+  /* कपड्याचा temporary URL */
+
+  const imageURL =
+    URL.createObjectURL(file);
+
+
+  /* आधीचा preview असल्यास काढा */
+
+  const oldPreview =
+    document.getElementById(
+      "garmentPreviewBox"
+    );
+
+  if(oldPreview){
+    oldPreview.remove();
+  }
+
+
+  /* नवीन preview तयार करा */
+
+  const previewBox =
+    document.createElement("div");
+
+  previewBox.id =
+    "garmentPreviewBox";
+
+  previewBox.style.marginTop =
+    "15px";
+
+  previewBox.style.padding =
+    "15px";
+
+  previewBox.style.borderRadius =
+    "18px";
+
+  previewBox.style.background =
+    "#0f172a";
+
+  previewBox.style.textAlign =
+    "center";
+
+
+  const title =
+    document.createElement("p");
+
+  title.innerText =
+    "👕 निवडलेला कपड्याचा फोटो";
+
+  title.style.marginBottom =
+    "10px";
+
+  title.style.fontWeight =
+    "bold";
+
+
+  const img =
+    document.createElement("img");
+
+  img.src =
+    imageURL;
+
+  img.style.width =
+    "100%";
+
+  img.style.maxHeight =
+    "300px";
+
+  img.style.objectFit =
+    "contain";
+
+  img.style.borderRadius =
+    "12px";
+
+
+  previewBox.appendChild(title);
+
+  previewBox.appendChild(img);
+
+
+  /* कपडा upload box च्या खाली preview */
+
+  document
+    .getElementById("clothInput")
+    .parentElement
+    .after(previewBox);
+
+
   document
     .getElementById("message")
     .innerText =
-      "👕 कपड्याचा फोटो निवडला आहे. AI Try करण्यासाठी तयार.";
+      "✅ कपड्याचा फोटो निवडला आहे. AI Try करण्यासाठी तयार.";
 
 });
 
