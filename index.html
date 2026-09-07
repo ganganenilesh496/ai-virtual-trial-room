@@ -1166,69 +1166,48 @@ document
    AI TRY NOW
 ================================ */
 
+
 async function tryNow(){
 
   const message =
-    document.getElementById(
-      "message"
-    );
-
+    document.getElementById("message");
 
   const button =
-    document.getElementById(
-      "tryButton"
-    );
-
+    document.getElementById("tryButton");
 
   if(!personFile){
-
     message.innerText =
       "⚠️ आधी तुमचा फोटो Camera किंवा Gallery मधून निवडा.";
-
     return;
-
   }
-
 
   if(!garmentFile){
-
     message.innerText =
       "⚠️ आधी कपड्याचा फोटो upload करा.";
-
     return;
-
   }
 
-
-  button.disabled =
-    true;
-
-
+  button.disabled = true;
   button.innerText =
     "⏳ AI Result तयार होत आहे...";
 
-
   message.innerText =
     "✨ AI तुमचा Trial Room Result तयार करत आहे...";
-
 
   try{
 
     const formData =
       new FormData();
 
-
     formData.append(
       "person_image",
       personFile
     );
 
-
     formData.append(
       "garment_image",
       garmentFile
     );
-
 
     const response =
       await fetch(
@@ -1239,95 +1218,96 @@ async function tryNow(){
         }
       );
 
+    const contentType =
+      response.headers.get(
+        "content-type"
+      ) || "";
 
     if(!response.ok){
 
-      let errorMessage =
-        "AI Try-On करण्यात अडचण आली.";
-
+      let errorText =
+        "AI Try-On Error";
 
       try{
 
-        const data =
-          await response.json();
+        if(
+          contentType.includes(
+            "application/json"
+          )
+        ){
 
+          const data =
+            await response.json();
 
-        if(data.error){
+          errorText =
+            data.error ||
+            "Unknown API Error";
 
-          errorMessage =
-            data.error;
+          if(data.code){
+            errorText +=
+              " [" +
+              data.code +
+              "]";
+          }
 
-        }
+        }else{
 
+          const text =
+            await response.text();
 
-        if(data.code){
-
-          errorMessage +=
-            " (" +
-            data.code +
-            ")";
+          if(text){
+            errorText = text;
+          }
 
         }
 
       }catch(e){}
 
-
       throw new Error(
-        errorMessage
+        "HTTP " +
+        response.status +
+        ": " +
+        errorText
       );
-
     }
-
 
     const blob =
       await response.blob();
 
-
     if(resultObjectURL){
-
       URL.revokeObjectURL(
         resultObjectURL
       );
-
     }
 
-
     resultObjectURL =
-      URL.createObjectURL(
-        blob
-      );
-
+      URL.createObjectURL(blob);
 
     const result =
       document.getElementById(
         "resultPreview"
       );
 
-
     result.src =
       resultObjectURL;
-
 
     result.style.display =
       "block";
 
-
-    document
-      .getElementById(
-        "resultPlaceholder"
-      )
-      .style.display =
+    document.getElementById(
+      "resultPlaceholder"
+    ).style.display =
       "none";
-
 
     message.innerText =
       "✅ AI Trial Result तयार झाला!";
 
-
   }catch(error){
 
-    console.error(error);
-
+    console.error(
+      "AI TRY-ON ERROR:",
+      error
+    );
 
     message.innerText =
       "❌ " +
@@ -1338,14 +1318,11 @@ async function tryNow(){
     button.disabled =
       false;
 
-
     button.innerText =
       "✨ AI TRY NOW";
 
   }
-
 }
-
 
 /* ================================
    DOWNLOAD
