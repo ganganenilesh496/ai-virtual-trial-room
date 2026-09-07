@@ -535,46 +535,49 @@ let selectedCloth = null;
    PERSON PHOTO
 ================================ */
 
+
 document
 .getElementById("personInput")
 .addEventListener("change", function(){
 
-  const file = this.files[0];
+  const file = this.files && this.files[0];
 
-  if(!file) return;
+  if(!file){
+    return;
+  }
 
   personFile = file;
 
-  const reader = new FileReader();
+  const img =
+    document.getElementById("personPreview");
 
-  reader.onload = function(e){
+  const placeholder =
+    document.getElementById("personPlaceholder");
 
-    const img =
-      document.getElementById(
-        "personPreview"
-      );
+  const message =
+    document.getElementById("message");
 
-    img.src = e.target.result;
+  /* फोटोचा temporary URL तयार करा */
+  const imageURL =
+    URL.createObjectURL(file);
 
-    img.style.display = "block";
+  /* फोटो दाखवा */
+  img.src = imageURL;
 
-    document
-      .getElementById(
-        "personPlaceholder"
-      )
-      .style.display = "none";
+  img.style.display = "block";
 
-    document
-      .getElementById("message")
-      .innerText =
-        "✅ तुमचा फोटो निवडला आहे.";
+  img.style.width = "100%";
+  img.style.height = "100%";
+  img.style.objectFit = "contain";
 
-  };
+  /* Placeholder लपवा */
+  placeholder.style.display = "none";
 
-  reader.readAsDataURL(file);
+  /* संदेश */
+  message.innerText =
+    "✅ तुमचा फोटो निवडला आहे.";
 
 });
-
 
 /* ================================
    GARMENT SELECTION
