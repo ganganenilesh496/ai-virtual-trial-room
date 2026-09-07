@@ -1,220 +1,119 @@
-export default {
-  async fetch(request) {
+export async function POST(request) {
 
-    /* ================================
-       ONLY POST
-    ================================= */
+  const apiKey =
+    process.env.TRYONCLOUD_API_KEY;
 
-    if (request.method !== "POST") {
+  if (!apiKey) {
+    return Response.json(
+      {
+        error:
+          "TRYONCLOUD_API_KEY is not configured.",
+        code: "NO_API_KEY"
+      },
+      { status: 500 }
+    );
+  }
+
+  try {
+
+    const incomingForm =
+      await request.formData();
+
+    const personImage =
+      incomingForm.get("person_image");
+
+    const garmentImage =
+      incomingForm.get("garment_image");
+
+
+    if (
+      !personImage ||
+      typeof personImage === "string"
+    ) {
 
       return Response.json(
         {
-          error: "Only POST request is allowed."
+          error:
+            "Person photo is missing.",
+          code: "NO_PERSON"
         },
-        {
-          status: 405
-        }
+        { status: 400 }
       );
 
     }
 
 
-    /* ================================
-       API KEY
-    ================================= */
-
-    const apiKey =
-      process.env.TRYONCLOUD_API_KEY;
-
-
-    if (!apiKey) {
+    if (
+      !garmentImage ||
+      typeof garmentImage === "string"
+    ) {
 
       return Response.json(
         {
           error:
-            "TRYONCLOUD_API_KEY is not configured.",
-          code:
-            "NO_API_KEY"
+            "Garment photo is missing.",
+          code: "NO_GARMENT"
         },
-        {
-          status: 500
-        }
+        { status: 400 }
       );
 
     }
 
 
-    try {
-
-      /* ================================
-         GET FORM DATA
-      ================================= */
-
-      const incomingForm =
-        await request.formData();
+    const form =
+      new FormData();
 
 
-      const personImage =
-        incomingForm.get("person_image");
+    form.append(
+      "person_image",
+      personImage,
+      personImage.name ||
+        "person.jpg"
+    );
 
 
-      const garmentImage =
-        incomingForm.get("garment_image");
+    form.append(
+      "garment_image",
+      garmentImage,
+      garmentImage.name ||
+        "garment.jpg"
+    );
 
 
-      /* ================================
-         CHECK PERSON
-      ================================= */
+    const response =
+      await fetch(
+        "https://www.tryoncloud.com/api/v1/generate",
+        {
+          method: "POST",
 
-      if (
-        !personImage ||
-        typeof personImage === "string"
-      ) {
-
-        return Response.json(
-          {
-            error:
-              "Person photo is missing.",
-            code:
-              "NO_PERSON"
+          headers: {
+            "X-API-KEY": apiKey
           },
-          {
-            status: 400
-          }
-        );
 
-      }
-
-
-      /* ================================
-         CHECK GARMENT
-      ================================= */
-
-      if (
-        !garmentImage ||
-        typeof garmentImage === "string"
-      ) {
-
-        return Response.json(
-          {
-            error:
-              "Garment photo is missing.",
-            code:
-              "NO_GARMENT"
-          },
-          {
-            status: 400
-          }
-        );
-
-      }
-
-
-      /* ================================
-         CREATE TRYONCLOUD FORM
-      ================================= */
-
-      const form =
-        new FormData();
-
-
-      form.append(
-        "person_image",
-        personImage,
-        personImage.name ||
-          "person.jpg"
-      );
-
-
-      form.append(
-        "garment_image",
-        garmentImage,
-        garmentImage.name ||
-          "garment.jpg"
-      );
-
-
-      /* ================================
-         CALL TRYONCLOUD
-      ================================= */
-
-      const response =
-        await fetch(
-          "https://www.tryoncloud.com/api/v1/generate",
-          {
-            method: "POST",
-
-            headers: {
-              "X-API-KEY":
-                apiKey
-            },
-
-            body:
-              form
-          }
-        );
-
-
-      /* ================================
-         ERROR FROM TRYONCLOUD
-      ================================= */
-
-      if (!response.ok) {
-
-        let errorData = {
-          error:
-            "Try-On generation failed.",
-          code:
-            "GENERATION_FAILED"
-        };
-
-
-        try {
-
-          const contentType =
-            response.headers.get(
-              "content-type"
-            ) || "";
-
-
-          if (
-            contentType.includes(
-              "application/json"
-            )
-          ) {
-
-            errorData =
-              await response.json();
-
-          } else {
-
-            const text =
-              await response.text();
-
-            if (text) {
-
-              errorData = {
-                error: text,
-                code:
-                  "GENERATION_FAILED"
-              };
-
-            }
-
-          }
-
-        } catch (error) {
-
-          console.error(
-            "Error reading API error:",
-            error
-          );
-
+          body: form
         }
+      );
 
+
+    if (!response.ok) {
+
+      const contentType =
+        response.headers.get(
+          "content-type"
+        ) || "";
+
+
+      if (
+        contentType.includes(
+          "application/json"
+        )
+      ) {
+
+        const data =
+          await response.json();
 
         return Response.json(
-          errorData,
+          data,
           {
             status:
               response.status
@@ -224,52 +123,67 @@ export default {
       }
 
 
-      /* ================================
-         SUCCESS
-         TRYONCLOUD RETURNS IMAGE
-      ================================= */
-
-      return new Response(
-        response.body,
-        {
-          status: 200,
-
-          headers: {
-            "Content-Type":
-              response.headers.get(
-                "content-type"
-              ) ||
-              "image/png",
-
-            "Cache-Control":
-              "no-store"
-          }
-        }
-      );
-
-
-    } catch (error) {
-
-      console.error(
-        "TRYON SERVER ERROR:",
-        error
-      );
+      const text =
+        await response.text();
 
 
       return Response.json(
         {
           error:
-            error.message ||
-            "Server error occurred.",
+            text ||
+            "Try-On generation failed.",
           code:
-            "SERVER_ERROR"
+            "TRYONCLOUD_ERROR"
         },
         {
-          status: 500
+          status:
+            response.status
         }
       );
 
     }
 
+
+    return new Response(
+      response.body,
+      {
+        status: 200,
+
+        headers: {
+          "Content-Type":
+            response.headers.get(
+              "content-type"
+            ) ||
+            "image/png",
+
+          "Cache-Control":
+            "no-store"
+        }
+      }
+    );
+
+  } catch (error) {
+
+    console.error(
+      "TRYON SERVER ERROR:",
+      error
+    );
+
+
+    return Response.json(
+      {
+        error:
+          error.message ||
+          "Server error occurred.",
+
+        code:
+          "SERVER_ERROR"
+      },
+      {
+        status: 500
+      }
+    );
+
   }
-};
+
+}
