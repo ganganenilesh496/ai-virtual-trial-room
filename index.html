@@ -1313,15 +1313,29 @@ async function tryNow(){
     const formData =
       new FormData();
 
-    formData.append(
-      "person_image",
-      personFile
-    );
+    const compressedPerson =
+  await compressImage(
+    personFile,
+    1200,
+    0.82
+  );
 
-    formData.append(
-      "garment_image",
-      garmentFile
-    );
+const compressedGarment =
+  await compressImage(
+    garmentFile,
+    1200,
+    0.82
+  );
+
+formData.append(
+  "person_image",
+  compressedPerson
+);
+
+formData.append(
+  "garment_image",
+  compressedGarment
+);
 
     const response =
       await fetch(
