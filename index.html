@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 <html lang="mr">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
 
 <title>AI Virtual Trial Room</title>
 
 <style>
+
 *{
   box-sizing:border-box;
   margin:0;
@@ -17,7 +23,12 @@
 body{
   min-height:100vh;
   background:
-    linear-gradient(135deg,#171126,#32185c,#111827);
+    linear-gradient(
+      135deg,
+      #171126,
+      #32185c,
+      #111827
+    );
   color:white;
   padding:15px;
 }
@@ -60,6 +71,56 @@ body{
   font-size:20px;
 }
 
+
+/* ================================
+   CAMERA / GALLERY
+================================ */
+
+.photo-buttons{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.camera-btn,
+.gallery-btn{
+  border:0;
+  border-radius:16px;
+  padding:17px 10px;
+  color:white;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.camera-btn{
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #db2777
+    );
+}
+
+.gallery-btn{
+  background:#374151;
+}
+
+.camera-btn:hover,
+.gallery-btn:hover{
+  transform:translateY(-2px);
+}
+
+
+/* Camera input */
+
+input[type=file]{
+  display:none;
+}
+
+
+/* Upload box */
+
 .upload-box{
   display:block;
   border:2px dashed #8b5cf6;
@@ -79,9 +140,10 @@ body{
   margin-bottom:10px;
 }
 
-input[type=file]{
-  display:none;
-}
+
+/* ================================
+   PREVIEW
+================================ */
 
 .preview-area{
   display:grid;
@@ -114,9 +176,15 @@ input[type=file]{
   padding:20px;
 }
 
+
+/* ================================
+   CLOTHES
+================================ */
+
 .clothes-list{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+  grid-template-columns:
+    repeat(3,1fr);
   gap:12px;
 }
 
@@ -135,7 +203,9 @@ input[type=file]{
 
 .clothes.selected{
   border-color:#a78bfa;
-  box-shadow:0 0 0 3px rgba(167,139,250,.2);
+  box-shadow:
+    0 0 0 3px
+    rgba(167,139,250,.2);
 }
 
 .cloth-icon{
@@ -167,6 +237,11 @@ input[type=file]{
   font-weight:bold;
 }
 
+
+/* ================================
+   TRY BUTTON
+================================ */
+
 .try-btn{
   width:100%;
   border:0;
@@ -175,7 +250,12 @@ input[type=file]{
   font-size:18px;
   font-weight:bold;
   color:white;
-  background:linear-gradient(90deg,#7c3aed,#db2777);
+  background:
+    linear-gradient(
+      90deg,
+      #7c3aed,
+      #db2777
+    );
   cursor:pointer;
   margin-top:20px;
 }
@@ -185,6 +265,11 @@ input[type=file]{
   cursor:not-allowed;
 }
 
+
+/* ================================
+   MESSAGE
+================================ */
+
 .message{
   text-align:center;
   margin-top:15px;
@@ -192,6 +277,11 @@ input[type=file]{
   min-height:24px;
   line-height:1.6;
 }
+
+
+/* ================================
+   ACTIONS
+================================ */
 
 .actions{
   display:flex;
@@ -213,10 +303,20 @@ input[type=file]{
   color:white;
 }
 
+.share{
+  background:#2563eb;
+  color:white;
+}
+
 .reset{
   background:#374151;
   color:white;
 }
+
+
+/* ================================
+   INFO
+================================ */
 
 .info{
   margin-top:15px;
@@ -228,12 +328,22 @@ input[type=file]{
   line-height:1.6;
 }
 
+
+/* ================================
+   FOOTER
+================================ */
+
 .footer{
   text-align:center;
   color:#9ca3af;
   font-size:13px;
   padding:15px;
 }
+
+
+/* ================================
+   MOBILE
+================================ */
 
 @media(max-width:700px){
 
@@ -254,55 +364,119 @@ input[type=file]{
   }
 
   .clothes-list{
-    grid-template-columns:repeat(2,1fr);
+    grid-template-columns:
+      repeat(2,1fr);
   }
 
   .cloth-icon{
     height:130px;
   }
+
 }
+
+@media(max-width:450px){
+
+  .photo-buttons{
+    grid-template-columns:1fr;
+  }
+
+  .actions{
+    flex-direction:column;
+  }
+
+}
+
 </style>
+
 </head>
+
 
 <body>
 
 <div class="app">
 
-  <div class="header">
-    <div class="logo">👗✨</div>
 
-    <h1>AI Virtual Trial Room</h1>
+  <!-- ================================
+       HEADER
+  ================================= -->
+
+  <div class="header">
+
+    <div class="logo">
+      👗✨
+    </div>
+
+    <h1>
+      AI Virtual Trial Room
+    </h1>
 
     <p>
       तुमचा फोटो निवडा आणि कपडे AI ने Try करा
     </p>
+
   </div>
 
 
-  <!-- PERSON PHOTO -->
+  <!-- ================================
+       PERSON PHOTO
+  ================================= -->
 
   <div class="card">
 
-    <h2>📷 1. तुमचा फोटो</h2>
+    <h2>
+      📷 1. तुमचा फोटो
+    </h2>
 
-    <label
-      class="upload-box"
-      for="personInput"
+
+    <!-- CAMERA + GALLERY -->
+
+    <div class="photo-buttons">
+
+      <!-- CAMERA -->
+
+      <label
+        class="camera-btn"
+        for="cameraInput"
+        style="text-align:center;"
+      >
+
+        📷
+        <br>
+
+        Camera ने फोटो काढा
+
+      </label>
+
+
+      <!-- GALLERY -->
+
+      <label
+        class="gallery-btn"
+        for="personInput"
+        style="text-align:center;"
+      >
+
+        🖼️
+        <br>
+
+        Gallery मधून फोटो
+
+      </label>
+
+    </div>
+
+
+    <!-- CAMERA INPUT -->
+
+    <input
+      type="file"
+      id="cameraInput"
+      accept="image/*"
+      capture="user"
     >
 
-      <div class="upload-icon">📸</div>
 
-      <strong>
-        फोटो निवडण्यासाठी येथे क्लिक करा
-      </strong>
-
-      <p
-        style="margin-top:8px;color:#9ca3af;"
-      >
-        JPG / PNG फोटो
-      </p>
-
-    </label>
+    <!-- GALLERY INPUT -->
 
     <input
       type="file"
@@ -310,16 +484,37 @@ input[type=file]{
       accept="image/jpeg,image/png,image/webp"
     >
 
+
+    <div
+      class="info"
+      style="margin-top:15px;"
+    >
+
+      📌 <b>Camera फोटोसाठी:</b>
+      पूर्ण शरीर दिसेल असा फोटो काढा.
+      शक्यतो समोरून उभे राहा आणि
+      चांगला प्रकाश ठेवा.
+
+    </div>
+
   </div>
 
 
-  <!-- GARMENT -->
+  <!-- ================================
+       GARMENT
+  ================================= -->
 
   <div class="card">
 
-    <h2>👕 2. कपडा निवडा</h2>
+    <h2>
+      👕 2. कपडा निवडा
+    </h2>
+
 
     <div class="clothes-list">
+
+
+      <!-- WHITE -->
 
       <div
         class="clothes"
@@ -338,6 +533,8 @@ input[type=file]{
       </div>
 
 
+      <!-- BLUE -->
+
       <div
         class="clothes"
         data-name="Blue Shirt"
@@ -355,6 +552,8 @@ input[type=file]{
       </div>
 
 
+      <!-- BLACK -->
+
       <div
         class="clothes"
         data-name="Black T-Shirt"
@@ -371,8 +570,11 @@ input[type=file]{
 
       </div>
 
+
     </div>
 
+
+    <!-- CUSTOM GARMENT -->
 
     <label
       class="upload-box"
@@ -380,7 +582,9 @@ input[type=file]{
       style="margin-top:15px;"
     >
 
-      <div style="font-size:35px;">
+      <div
+        style="font-size:35px;"
+      >
         ➕
       </div>
 
@@ -389,12 +593,16 @@ input[type=file]{
       </strong>
 
       <p
-        style="margin-top:8px;color:#9ca3af;"
+        style="
+          margin-top:8px;
+          color:#9ca3af;
+        "
       >
         कपड्याचा स्पष्ट फोटो निवडा
       </p>
 
     </label>
+
 
     <input
       type="file"
@@ -405,17 +613,27 @@ input[type=file]{
   </div>
 
 
-  <!-- PREVIEW -->
+  <!-- ================================
+       PREVIEW
+  ================================= -->
 
   <div class="card">
 
-    <h2>✨ Trial Room Preview</h2>
+    <h2>
+      ✨ Trial Room Preview
+    </h2>
+
 
     <div class="preview-area">
 
+
+      <!-- PERSON -->
+
       <div>
 
-        <p style="margin-bottom:8px;">
+        <p
+          style="margin-bottom:8px;"
+        >
           तुमचा फोटो
         </p>
 
@@ -425,10 +643,15 @@ input[type=file]{
             id="personPlaceholder"
             class="placeholder"
           >
+
             📷
+
             <br><br>
+
             तुमचा फोटो येथे दिसेल
+
           </div>
+
 
           <img
             id="personPreview"
@@ -441,9 +664,13 @@ input[type=file]{
       </div>
 
 
+      <!-- RESULT -->
+
       <div>
 
-        <p style="margin-bottom:8px;">
+        <p
+          style="margin-bottom:8px;"
+        >
           AI Trial Result
         </p>
 
@@ -453,10 +680,15 @@ input[type=file]{
             id="resultPlaceholder"
             class="placeholder"
           >
+
             ✨
+
             <br><br>
+
             AI Result येथे दिसेल
+
           </div>
+
 
           <img
             id="resultPreview"
@@ -468,15 +700,20 @@ input[type=file]{
 
       </div>
 
+
     </div>
 
+
+    <!-- TRY -->
 
     <button
       id="tryButton"
       class="try-btn"
       onclick="tryNow()"
     >
+
       ✨ AI TRY NOW
+
     </button>
 
 
@@ -486,6 +723,8 @@ input[type=file]{
     ></div>
 
 
+    <!-- ACTIONS -->
+
     <div class="actions">
 
       <button
@@ -494,6 +733,15 @@ input[type=file]{
       >
         💾 Download
       </button>
+
+
+      <button
+        class="action-btn share"
+        onclick="shareResult()"
+      >
+        📤 Share
+      </button>
+
 
       <button
         class="action-btn reset"
@@ -506,17 +754,26 @@ input[type=file]{
 
 
     <div class="info">
+
       💡 <b>टीप:</b>
+
       चांगला AI Result मिळण्यासाठी
       व्यक्तीचा फोटो स्पष्ट आणि समोरून असावा.
-      कपड्याचा फोटोही स्पष्ट असावा.
+      पूर्ण शरीर शक्यतो दिसावे.
+
+      <br><br>
+
+      👕 कपड्याचा फोटोही पूर्ण आणि स्पष्ट असावा.
+
     </div>
 
   </div>
 
 
   <div class="footer">
+
     AI Virtual Trial Room • Powered by AI
+
   </div>
 
 </div>
@@ -524,60 +781,154 @@ input[type=file]{
 
 <script>
 
+
+/* ================================
+   VARIABLES
+================================ */
+
 let personFile = null;
 
 let garmentFile = null;
 
 let selectedCloth = null;
 
+let personObjectURL = null;
+
+let resultObjectURL = null;
+
 
 /* ================================
-   PERSON PHOTO
+   PERSON PHOTO FUNCTION
 ================================ */
 
-
-document
-.getElementById("personInput")
-.addEventListener("change", function(){
-
-  const file = this.files && this.files[0];
+function handlePersonPhoto(file){
 
   if(!file){
     return;
   }
 
+
+  /* Image check */
+
+  if(!file.type.startsWith("image/")){
+
+    document
+      .getElementById("message")
+      .innerText =
+      "⚠️ कृपया image फोटो निवडा.";
+
+    return;
+
+  }
+
+
   personFile = file;
 
+
   const img =
-    document.getElementById("personPreview");
+    document.getElementById(
+      "personPreview"
+    );
+
 
   const placeholder =
-    document.getElementById("personPlaceholder");
+    document.getElementById(
+      "personPlaceholder"
+    );
+
 
   const message =
-    document.getElementById("message");
+    document.getElementById(
+      "message"
+    );
 
-  /* फोटोचा temporary URL तयार करा */
-  const imageURL =
+
+  /* जुना URL remove */
+
+  if(personObjectURL){
+
+    URL.revokeObjectURL(
+      personObjectURL
+    );
+
+  }
+
+
+  /* नवीन URL */
+
+  personObjectURL =
     URL.createObjectURL(file);
 
-  /* फोटो दाखवा */
-  img.src = imageURL;
 
-  img.style.display = "block";
+  img.src =
+    personObjectURL;
 
-  img.style.width = "100%";
-  img.style.height = "100%";
-  img.style.objectFit = "contain";
 
-  /* Placeholder लपवा */
-  placeholder.style.display = "none";
+  img.style.display =
+    "block";
 
-  /* संदेश */
+
+  img.style.width =
+    "100%";
+
+
+  img.style.height =
+    "100%";
+
+
+  img.style.objectFit =
+    "contain";
+
+
+  placeholder.style.display =
+    "none";
+
+
   message.innerText =
     "✅ तुमचा फोटो निवडला आहे.";
 
-});
+}
+
+
+/* ================================
+   GALLERY PHOTO
+================================ */
+
+document
+  .getElementById("personInput")
+  .addEventListener(
+    "change",
+    function(){
+
+      const file =
+        this.files &&
+        this.files[0];
+
+      handlePersonPhoto(file);
+
+    }
+  );
+
+
+/* ================================
+   CAMERA PHOTO
+================================ */
+
+document
+  .getElementById("cameraInput")
+  .addEventListener(
+    "change",
+    function(){
+
+      const file =
+        this.files &&
+        this.files[0];
+
+      handlePersonPhoto(file);
+
+    }
+  );
+
 
 /* ================================
    GARMENT SELECTION
@@ -587,32 +938,46 @@ function selectCloth(element){
 
   document
     .querySelectorAll(".clothes")
-    .forEach(function(item){
+    .forEach(
+      function(item){
 
-      item.classList.remove("selected");
+        item.classList.remove(
+          "selected"
+        );
 
-    });
+      }
+    );
 
-  element.classList.add("selected");
+
+  element.classList.add(
+    "selected"
+  );
+
 
   selectedCloth =
     element.dataset.name;
 
+
   /*
-    Built-in emoji garments are only
-    visual placeholders for now.
-    Real AI needs an actual garment
+    Built-in emoji garments are
+    visual placeholders only.
+
+    Real AI requires actual garment
     image file.
   */
 
-  garmentFile = null;
+  garmentFile =
+    null;
+
 
   document
     .getElementById("message")
     .innerText =
+
       "👕 " +
       selectedCloth +
       " निवडला आहे. " +
+
       "AI साठी कपड्याचा फोटो upload करा.";
 
 }
@@ -623,124 +988,178 @@ function selectCloth(element){
 ================================ */
 
 document
-.getElementById("clothInput")
-.addEventListener("change", function(){
+  .getElementById("clothInput")
+  .addEventListener(
+    "change",
+    function(){
 
-  const file =
-    this.files && this.files[0];
-
-  if(!file){
-    return;
-  }
-
-  garmentFile = file;
-
-  selectedCloth =
-    "Custom Garment";
+      const file =
+        this.files &&
+        this.files[0];
 
 
-  document
-    .querySelectorAll(".clothes")
-    .forEach(function(item){
-
-      item.classList.remove("selected");
-
-    });
+      if(!file){
+        return;
+      }
 
 
-  /* कपड्याचा temporary URL */
+      if(
+        !file.type.startsWith(
+          "image/"
+        )
+      ){
 
-  const imageURL =
-    URL.createObjectURL(file);
+        document
+          .getElementById("message")
+          .innerText =
+          "⚠️ कृपया कपड्याचा image फोटो निवडा.";
 
+        return;
 
-  /* आधीचा preview असल्यास काढा */
-
-  const oldPreview =
-    document.getElementById(
-      "garmentPreviewBox"
-    );
-
-  if(oldPreview){
-    oldPreview.remove();
-  }
+      }
 
 
-  /* नवीन preview तयार करा */
-
-  const previewBox =
-    document.createElement("div");
-
-  previewBox.id =
-    "garmentPreviewBox";
-
-  previewBox.style.marginTop =
-    "15px";
-
-  previewBox.style.padding =
-    "15px";
-
-  previewBox.style.borderRadius =
-    "18px";
-
-  previewBox.style.background =
-    "#0f172a";
-
-  previewBox.style.textAlign =
-    "center";
+      garmentFile =
+        file;
 
 
-  const title =
-    document.createElement("p");
-
-  title.innerText =
-    "👕 निवडलेला कपड्याचा फोटो";
-
-  title.style.marginBottom =
-    "10px";
-
-  title.style.fontWeight =
-    "bold";
+      selectedCloth =
+        "Custom Garment";
 
 
-  const img =
-    document.createElement("img");
+      document
+        .querySelectorAll(".clothes")
+        .forEach(
+          function(item){
 
-  img.src =
-    imageURL;
+            item.classList.remove(
+              "selected"
+            );
 
-  img.style.width =
-    "100%";
-
-  img.style.maxHeight =
-    "300px";
-
-  img.style.objectFit =
-    "contain";
-
-  img.style.borderRadius =
-    "12px";
+          }
+        );
 
 
-  previewBox.appendChild(title);
-
-  previewBox.appendChild(img);
-
-
-  /* कपडा upload box च्या खाली preview */
-
-  document
-    .getElementById("clothInput")
-    .parentElement
-    .after(previewBox);
+      const imageURL =
+        URL.createObjectURL(file);
 
 
-  document
-    .getElementById("message")
-    .innerText =
-      "✅ कपड्याचा फोटो निवडला आहे. AI Try करण्यासाठी तयार.";
+      const oldPreview =
+        document.getElementById(
+          "garmentPreviewBox"
+        );
 
-});
+
+      if(oldPreview){
+
+        oldPreview.remove();
+
+      }
+
+
+      const previewBox =
+        document.createElement(
+          "div"
+        );
+
+
+      previewBox.id =
+        "garmentPreviewBox";
+
+
+      previewBox.style.marginTop =
+        "15px";
+
+
+      previewBox.style.padding =
+        "15px";
+
+
+      previewBox.style.borderRadius =
+        "18px";
+
+
+      previewBox.style.background =
+        "#0f172a";
+
+
+      previewBox.style.textAlign =
+        "center";
+
+
+      const title =
+        document.createElement(
+          "p"
+        );
+
+
+      title.innerText =
+        "👕 निवडलेला कपड्याचा फोटो";
+
+
+      title.style.marginBottom =
+        "10px";
+
+
+      title.style.fontWeight =
+        "bold";
+
+
+      const img =
+        document.createElement(
+          "img"
+        );
+
+
+      img.src =
+        imageURL;
+
+
+      img.style.width =
+        "100%";
+
+
+      img.style.maxHeight =
+        "300px";
+
+
+      img.style.objectFit =
+        "contain";
+
+
+      img.style.borderRadius =
+        "12px";
+
+
+      previewBox.appendChild(
+        title
+      );
+
+
+      previewBox.appendChild(
+        img
+      );
+
+
+      document
+        .getElementById(
+          "clothInput"
+        )
+        .parentElement
+        .after(
+          previewBox
+        );
+
+
+      document
+        .getElementById(
+          "message"
+        )
+        .innerText =
+          "✅ कपड्याचा फोटो निवडला आहे. AI Try करण्यासाठी तयार.";
+
+    }
+  );
 
 
 /* ================================
@@ -754,6 +1173,7 @@ async function tryNow(){
       "message"
     );
 
+
   const button =
     document.getElementById(
       "tryButton"
@@ -763,9 +1183,10 @@ async function tryNow(){
   if(!personFile){
 
     message.innerText =
-      "⚠️ आधी तुमचा फोटो निवडा.";
+      "⚠️ आधी तुमचा फोटो Camera किंवा Gallery मधून निवडा.";
 
     return;
+
   }
 
 
@@ -775,10 +1196,13 @@ async function tryNow(){
       "⚠️ आधी कपड्याचा फोटो upload करा.";
 
     return;
+
   }
 
 
-  button.disabled = true;
+  button.disabled =
+    true;
+
 
   button.innerText =
     "⏳ AI Result तयार होत आहे...";
@@ -793,10 +1217,12 @@ async function tryNow(){
     const formData =
       new FormData();
 
+
     formData.append(
       "person_image",
       personFile
     );
+
 
     formData.append(
       "garment_image",
@@ -819,10 +1245,12 @@ async function tryNow(){
       let errorMessage =
         "AI Try-On करण्यात अडचण आली.";
 
+
       try{
 
         const data =
           await response.json();
+
 
         if(data.error){
 
@@ -830,6 +1258,7 @@ async function tryNow(){
             data.error;
 
         }
+
 
         if(data.code){
 
@@ -854,8 +1283,19 @@ async function tryNow(){
       await response.blob();
 
 
-    const resultURL =
-      URL.createObjectURL(blob);
+    if(resultObjectURL){
+
+      URL.revokeObjectURL(
+        resultObjectURL
+      );
+
+    }
+
+
+    resultObjectURL =
+      URL.createObjectURL(
+        blob
+      );
 
 
     const result =
@@ -865,7 +1305,8 @@ async function tryNow(){
 
 
     result.src =
-      resultURL;
+      resultObjectURL;
+
 
     result.style.display =
       "block";
@@ -887,6 +1328,7 @@ async function tryNow(){
 
     console.error(error);
 
+
     message.innerText =
       "❌ " +
       error.message;
@@ -895,6 +1337,7 @@ async function tryNow(){
 
     button.disabled =
       false;
+
 
     button.innerText =
       "✨ AI TRY NOW";
@@ -931,7 +1374,9 @@ function downloadResult(){
 
 
   const link =
-    document.createElement("a");
+    document.createElement(
+      "a"
+    );
 
 
   link.href =
@@ -942,7 +1387,96 @@ function downloadResult(){
     "ai-trial-room-result.png";
 
 
+  document.body.appendChild(
+    link
+  );
+
+
   link.click();
+
+
+  link.remove();
+
+}
+
+
+/* ================================
+   SHARE
+================================ */
+
+async function shareResult(){
+
+  const img =
+    document.getElementById(
+      "resultPreview"
+    );
+
+
+  if(
+    img.style.display === "none" ||
+    !img.src
+  ){
+
+    alert(
+      "आधी AI TRY NOW करा."
+    );
+
+    return;
+
+  }
+
+
+  try{
+
+    const response =
+      await fetch(
+        img.src
+      );
+
+
+    const blob =
+      await response.blob();
+
+
+    const file =
+      new File(
+        [blob],
+        "ai-trial-room-result.png",
+        {
+          type:
+            "image/png"
+        }
+      );
+
+
+    if(
+      navigator.canShare &&
+      navigator.canShare({
+        files:[file]
+      })
+    ){
+
+      await navigator.share({
+        title:
+          "AI Virtual Trial Room",
+        text:
+          "माझा AI Trial Room Result 👗✨",
+        files:[file]
+      });
+
+    }else{
+
+      alert(
+        "तुमच्या browser मध्ये direct sharing उपलब्ध नाही. Download करून Share करा."
+      );
+
+    }
+
+  }catch(error){
+
+    console.error(error);
+
+  }
 
 }
 
@@ -953,25 +1487,64 @@ function downloadResult(){
 
 function resetApp(){
 
-  personFile = null;
+  personFile =
+    null;
 
-  garmentFile = null;
 
-  selectedCloth = null;
+  garmentFile =
+    null;
+
+
+  selectedCloth =
+    null;
+
+
+  if(personObjectURL){
+
+    URL.revokeObjectURL(
+      personObjectURL
+    );
+
+    personObjectURL =
+      null;
+
+  }
+
+
+  if(resultObjectURL){
+
+    URL.revokeObjectURL(
+      resultObjectURL
+    );
+
+    resultObjectURL =
+      null;
+
+  }
 
 
   document
     .getElementById(
       "personInput"
     )
-    .value = "";
+    .value =
+    "";
+
+
+  document
+    .getElementById(
+      "cameraInput"
+    )
+    .value =
+    "";
 
 
   document
     .getElementById(
       "clothInput"
     )
-    .value = "";
+    .value =
+    "";
 
 
   document
@@ -1004,12 +1577,46 @@ function resetApp(){
     )
     .style.display =
     "block";
+
+
+  document
+    .querySelectorAll(
+      ".clothes"
+    )
+    .forEach(
+      function(item){
+
+        item.classList.remove(
+          "selected"
+        );
+
+      }
+    );
+
+
+  const garmentPreview =
+    document.getElementById(
+      "garmentPreviewBox"
+    );
+
+
+  if(garmentPreview){
+
+    garmentPreview.remove();
+
+  }
+
+
+  document
+    .getElementById(
+      "message"
+    )
+    .innerText =
+    "🔄 App Reset झाले.";
+
 }
 
 </script>
 
 </body>
-
 </html>
-
- 
